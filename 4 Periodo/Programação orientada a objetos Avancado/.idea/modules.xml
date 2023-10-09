@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Biblioteca/Biblioteca.iml" filepath="$PROJECT_DIR$/Biblioteca/Biblioteca.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CalcularSalarios/src/CalcularSalarios.iml" filepath="$PROJECT_DIR$/CalcularSalarios/src/CalcularSalarios.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CalcularSalarios/CalcularSalarios1.iml" filepath="$PROJECT_DIR$/CalcularSalarios/CalcularSalarios1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CorrecaoGeradorNotificacao/CorrecaoGeradorNotificacao.iml" filepath="$PROJECT_DIR$/CorrecaoGeradorNotificacao/CorrecaoGeradorNotificacao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Exercicio Teorico/Exercicio Teorico.iml" filepath="$PROJECT_DIR$/Exercicio Teorico/Exercicio Teorico.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeradorDeNotaFiscal/GeradorDeNotaFiscal.iml" filepath="$PROJECT_DIR$/GeradorDeNotaFiscal/GeradorDeNotaFiscal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeradorEstatisticasBrasileirao/GeradorEstatisticasBrasileirao.iml" filepath="$PROJECT_DIR$/GeradorEstatisticasBrasileirao/GeradorEstatisticasBrasileirao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LojaOnline/LojaOnline.iml" filepath="$PROJECT_DIR$/LojaOnline/LojaOnline.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Programação orientada a objetos Avancado.iml" filepath="$PROJECT_DIR$/.idea/Programação orientada a objetos Avancado.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RPGGAME/RPGGAME.iml" filepath="$PROJECT_DIR$/RPGGAME/RPGGAME.iml" />
+    </modules>
+  </component>
+</project>
