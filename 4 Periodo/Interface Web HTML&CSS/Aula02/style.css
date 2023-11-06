@@ -1,0 +1,31 @@
+*{
+    margin-bottom: 25px    ;
+    text-align: center;
+}
+p.border{
+    border-width: 5px;
+    border-radius: 5px;
+    height: 50px;
+    width: 30%;
+}
+p.solid{
+    border-style: solid;
+}
+.Red{
+    background-color: red;
+    border-color: red;
+    color: black;
+}
+.Orange{
+    border-color: orange;
+    background-color: orange;
+    color: black;
+}
+.Gray{
+    border-color: gray;
+    background-color: gray;
+    color: black;
+}
+p.bold{
+    font-weight: bold;
+}
