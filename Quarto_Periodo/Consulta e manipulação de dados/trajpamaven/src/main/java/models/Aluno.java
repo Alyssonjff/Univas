@@ -19,7 +19,7 @@ public class Aluno {
 	private String endereco;
 
 	@ManyToOne
-	@JoinColumn(name = "Id_Curso")
+	@JoinColumn(name = "matricula_Aluno")
 	private Curso curso;
 	
 	public Aluno() {

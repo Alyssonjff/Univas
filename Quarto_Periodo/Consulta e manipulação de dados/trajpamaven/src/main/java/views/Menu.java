@@ -35,7 +35,7 @@ public class Menu {
 	            case 3:
 	            	scanner.nextLine(); 
                     System.out.println("ID do curso: ");
-                    String IdJoin = scanner.nextLine();
+                    Integer IdJoin = scanner.nextInt();
 
                     
                     Curso cg = em.find(Curso.class, IdJoin);
@@ -69,7 +69,7 @@ public class Menu {
             System.out.println("2. Consultar Curso");
             System.out.println("3. Atualizar Curso");
             System.out.println("4. Sair");
-            System.out.println("0. Voltar para o Menu Curso");
+            System.out.println("0. Voltar para o Menu Escola");
 
             System.out.print("Escolha uma opção: ");
             int opcaoCurso = scanner.nextInt();
@@ -103,7 +103,7 @@ public class Menu {
             System.out.println("2. Consultar Aluno");
             System.out.println("3. Atualizar Aluno");
             System.out.println("4. Sair");
-            System.out.println("0. Voltar para o Menu Curso");
+            System.out.println("0. Voltar para o Menu Escola");
 
             System.out.print("Escolha uma opção: ");
             int opcaoAluno = scanner.nextInt();

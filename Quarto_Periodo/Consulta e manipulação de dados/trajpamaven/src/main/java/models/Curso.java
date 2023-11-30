@@ -17,7 +17,7 @@ public class Curso {
 	private String NomeCurso;
 	
 	@OneToMany
-	@JoinTable(name="aluno_curso",  joinColumns = @JoinColumn(name="aluno_matricula"), inverseJoinColumns = @JoinColumn(name="curso_id"))
+	@JoinTable(name="aluno_curso",  joinColumns = @JoinColumn(name="curso_id"), inverseJoinColumns = @JoinColumn(name="matricula_Aluno"))
 	private List<Aluno> aluno;
 	
 	private Curso() {

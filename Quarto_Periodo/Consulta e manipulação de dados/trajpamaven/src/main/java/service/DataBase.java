@@ -27,7 +27,6 @@ public class DataBase {
 		
 		System.out.println("Endereco: ");
 		String endereco = scanner.nextLine();
-		scanner.nextLine();
 		
 		System.out.println("ID do Curso: ");
 		Integer idCurso = scanner.nextInt();
@@ -62,7 +61,7 @@ public class DataBase {
 		
         try {
         	System.out.println("Digite a Matricula: ");
-            String matricula = scanner.nextLine();
+            Integer matricula = scanner.nextInt();
             
             Aluno aluno = em.find(Aluno.class, matricula);
 
@@ -88,8 +87,8 @@ public class DataBase {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("Digite a Matricula: ");
-		String matricula = scanner.nextLine();
-			
+		Integer matricula = scanner.nextInt();
+		scanner.nextLine();			
 		em.getTransaction().begin();
 			
 		Aluno aluno = em.find(Aluno.class, matricula);
@@ -136,7 +135,7 @@ public class DataBase {
 	     
 	     try {
 	           	System.out.print("Informe a Matricula do Aluno a ser deletado: ");
-	            String mat = scanner.nextLine();
+	            Integer mat = scanner.nextInt();
 
 	            em.getTransaction().begin();
 	            Aluno aluno = em.find(Aluno.class, mat);
@@ -197,7 +196,6 @@ public class DataBase {
 		System.out.println("Curso Adicionado: ");
 		System.out.println("ID: " + id);
         System.out.println("Nome: " + nome);
-
 	}
 	
 	public static void consultarCurso() {
@@ -208,7 +206,7 @@ public class DataBase {
 		
         try {
         	System.out.println("Digite o Id do curso: ");
-            String id = scanner.nextLine();
+            Integer id = scanner.nextInt();
             
             Curso curso = em.find(Curso.class, id);
 
@@ -232,7 +230,8 @@ public class DataBase {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("Digite o ID do curso: ");
-		String id = scanner.nextLine();
+		Integer id = scanner.nextInt();
+		scanner.nextLine();
 			
 		em.getTransaction().begin();
 			
@@ -269,7 +268,7 @@ public class DataBase {
 	     
 	     try {
 	           	System.out.print("Informe o ID do curso a ser deletado: ");
-	            String id = scanner.nextLine();
+	            Integer id = scanner.nextInt();
 
 	            em.getTransaction().begin();
 	            Curso c = em.find(Curso.class, id);
@@ -296,6 +295,7 @@ public class DataBase {
 	            System.out.println("Ocorreu um erro durante a exclusão: " + e.getMessage());
 	        } finally {
 	            em.close();
+	            
 	        }
 	}
 	
