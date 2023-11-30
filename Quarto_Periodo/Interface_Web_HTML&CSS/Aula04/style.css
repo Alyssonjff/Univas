@@ -20,7 +20,7 @@ form{
 label{
     margin-bottom: 5px;
 }
-input, textarea{
+input, textarea, select{
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid rosybrown;
