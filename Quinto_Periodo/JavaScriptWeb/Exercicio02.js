@@ -85,6 +85,16 @@ const numero = 2;
 console.log(`Fatorial de ${numero} é: ${fatorial(numero)}`);
 
 //Crie uma função chamada executaCallback que aceite outra função como parâmetro e a execute.
+function executaCallback(callback) {
+
+    callback();
+}
+function minhaFuncao() {
+    console.log("Teste");
+}
+executaCallback(minhaFuncao);
+
+//Crie uma função chamada somaDinamica que possa receber um número variável de argumentos e retorne a soma deles.
 async function aguardarSegundos(segundos) {
     await new Promise(resolve => setTimeout(resolve, segundos * 1000));
     console.log(`Passou-se ${segundos} secs!`);
@@ -92,10 +102,14 @@ async function aguardarSegundos(segundos) {
 const tempoEspera = 3; 
 aguardarSegundos(tempoEspera);
 
-//Crie uma função chamada somaDinamica que possa receber um número variável de argumentos e retorne a soma deles.
-
-
 //Crie uma função que utilize uma arrow function para imprimir o valor de this em diferentes contextos.
 //Validação de Números:
 
 //Crie uma função chamada ehNumero que aceite um parâmetro e retorne verdadeiro se for um número e falso caso contrário.
+function ehNumero(valor) {
+    return typeof valor === "number" && !isNaN(valor);
+}
+console.log(ehNumero(2));
+console.log(ehNumero("Olá"));
+console.log(ehNumero(3.14));
+console.log(ehNumero("553"));
