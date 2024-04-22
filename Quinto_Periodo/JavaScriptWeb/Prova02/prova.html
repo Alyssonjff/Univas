@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Locadora de Filmes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    section {
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Locadora de Filmes</h1>
+</header>
+
+<section>
+  <h2>Filmes Disponíveis</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Ano de Lançamento</th>
+        <th>Gênero</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Matrix</td>
+        <td>1999</td>
+        <td>Ficção Científica</td>
+      </tr>
+      <tr>
+        <td>O Poderoso Chefão</td>
+        <td>1972</td>
+        <td>Drama</td>
+      </tr>
+      <tr>
+        <td>Interestelar</td>
+        <td>2014</td>
+        <td>Ficção Científica</td>
+      </tr>
+      <tr>
+        <td>O Senhor dos Anéis: A Sociedade do Anel</td>
+        <td>2001</td>
+        <td>Aventura</td>
+      </tr>
+      <tr>
+        <td>De Volta para o Futuro</td>
+        <td>1985</td>
+        <td>Aventura</td>
+      </tr>
+      <tr>
+        <td>Star Wars: Episódio IV - Uma Nova Esperança</td>
+        <td>1977</td>
+        <td>Ficção Científica</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Locações Realizadas</h2>
+  <table id="aluguel">
+    <thead>
+      <tr>
+        <th>Data de Locação</th>
+        <th>Data de Devolução</th>
+        <th>Nome do Cliente</th>
+        <th>Filme Locado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>01/04/2024</td>
+        <td>08/04/2024</td>
+        <td>João da Silva</td>
+        <td>Matrix</td>
+      </tr>
+      <tr>
+        <td>03/04/2024</td>
+        <td></td>
+        <td>Maria Oliveira</td>
+        <td>O Poderoso Chefão</td>
+      </tr>
+      <tr>
+        <td>05/04/2024</td>
+        <td>12/04/2024</td>
+        <td>Carlos Santos</td>
+        <td>Interestelar</td>
+      </tr>
+      <tr>
+        <td>07/04/2024</td>
+        <td></td>
+        <td>Fernanda Souza</td>
+        <td>O Senhor dos Anéis: A Sociedade do Anel</td>
+      </tr>
+      <tr>
+        <td>10/04/2024</td>
+        <td></td>
+        <td>Rafael Silva</td>
+        <td>De Volta para o Futuro</td>
+      </tr>
+      <tr>
+        <td>12/04/2024</td>
+        <td>19/04/2024</td>
+        <td>Patrícia Lima</td>
+        <td>Star Wars: Episódio IV - Uma Nova Esperança</td>
+      </tr>
+      <!-- Adicione mais locações aqui -->
+    </tbody>
+  </table>
+
+  <h2>Filmes em Locação</h2>
+  <table id="filmes_em_locacao">
+    <thead>
+      <tr>
+        <th>Filme</th>
+        <th>Quantidade</th>
+      </tr>
+    </thead>
+    <tbody> </tbody>
+  </table>
+
+  <h2>Filmes em Estoque</h2>
+  <table id="filmes_em_estoque">
+    <thead>
+      <tr>
+        <th>Filme</th>
+        <th>Quantidade</th>
+      </tr>
+    </thead>
+    <tbody> </tbody>
+  </table>
+
+  <h2>Adicionar Lançamento do Filme</h2>
+  <form id="form_locacao">
+    <label for="cliente">Nome do Cliente:</label>
+    <input type="text" id="cliente" name="cliente" required><br>
+
+    <label for="filme">Filme Locado:</label>
+    <select id="filme" name="filme" required>
+      <option value="">Selecione um filme</option>
+      <option value="Matrix">Matrix</option>
+      <option value="O Poderoso Chefão">O Poderoso Chefão</option>
+      <option value="Interestelar">Interestelar</option>
+      <option value="O Senhor dos Anéis: A Sociedade do Anel">O Senhor dos Anéis: A Sociedade do Anel</option>
+      <option value="De Volta para o Futuro">De Volta para o Futuro</option>
+      <option value="Star Wars: Episódio IV - Uma Nova Esperança">Star Wars: Episódio IV - Uma Nova Esperança</option>
+    </select><br>
+
+    <input type="submit" value="Adicionar Locação">
+  </form>
+
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var tabelaLocacoes = document.getElementById("aluguel");
+
+    for (var i = 1; i < tabelaLocacoes.rows.length; i++) {
+      var dataDevolucao = tabelaLocacoes.rows[i].cells[1].textContent.trim();
+
+      if (dataDevolucao === "") {
+        tabelaLocacoes.rows[i].style.backgroundColor = "#f7c1c1";
+      } else {
+        tabelaLocacoes.rows[i].style.backgroundColor = "#c1f7d5";
+      }
+    }
+
+    document.getElementById("form_locacao").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var cliente = document.getElementById("cliente").value.trim();
+      var filme = document.getElementById("filme").value.trim();
+
+      var novaLocacao = "<tr><td>23/04/2024</td><td></td><td>" + cliente + "</td><td>" + filme + "</td></tr>";
+      tabelaLocacoes.insertAdjacentHTML("beforeend", novaLocacao);
+      //Esqueci como faz para colocar a data, desculpe
+
+      document.getElementById("cliente").value = "";
+      document.getElementById("filme").value = "";
+    });
+  });
+</script>
+  
+
+</body>
