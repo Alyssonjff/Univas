@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ProjectsCreatedScreen extends StatelessWidget {
+  final SharedPreferences prefs;
+
+  ProjectsCreatedScreen({required this.prefs});
+
+  List<Map<String, String>> _loadProjects() {
+    final String? projectsData = prefs.getString('projects');
+    if (projectsData != null) {
+      List<dynamic> decodedData = jsonDecode(projectsData);
+      return decodedData.map((item) => Map<String, String>.from(item)).toList();
+    }
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> projects = _loadProjects();
+
     return Scaffold(
       backgroundColor: Color(0xFF40E0D0),
       appBar: PreferredSize(
@@ -22,10 +39,26 @@ class ProjectsCreatedScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text(
-          'Aqui estarão os projetos que foram criados.',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
+        child: projects.isEmpty
+            ? Text(
+                'Nenhum projeto criado.',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              )
+            : ListView.builder(
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      projects[index]['title']!,
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    subtitle: Text(
+                      'Autor: ${projects[index]['author']}',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                },
+              ),
       ),
       floatingActionButton: Stack(
         children: [

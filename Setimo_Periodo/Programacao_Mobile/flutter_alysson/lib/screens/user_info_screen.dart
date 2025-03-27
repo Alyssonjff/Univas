@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 class UserInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> user = {
+      'name': 'Alysson Ferreira',
+      'email': 'Alyssonjfranca@gmail.com',
+      'role': 'Aluno',
+    };
+
     return Scaffold(
       backgroundColor: Color(0xFF40E0D0),
       appBar: PreferredSize(
@@ -22,9 +28,24 @@ class UserInfoScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text(
-          'Aqui estão as informações do usuário.',
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Nome: ${user['name']}',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Email: ${user['email']}',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Função: ${user['role']}',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ],
         ),
       ),
       floatingActionButton: Stack(

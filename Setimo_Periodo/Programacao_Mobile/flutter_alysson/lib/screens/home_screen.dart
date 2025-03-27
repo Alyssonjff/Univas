@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'create_project_screen.dart';
+import 'projects_created_screen.dart';
+import 'search_projects_screen.dart';
+import 'user_info_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+  final SharedPreferences prefs;
+
+  HomeScreen({required this.prefs});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,12 @@ class HomeScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/projects-created');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProjectsCreatedScreen(prefs: prefs),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFD3D3D3),
@@ -45,7 +59,12 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/search-projects');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchProjectsScreen(prefs: prefs),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFD3D3D3),
@@ -60,7 +79,12 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/create-project');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateProjectScreen(prefs: prefs),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFD3D3D3),
@@ -91,6 +115,17 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.home, size: 40, color: Colors.white),
               onPressed: () {
                 Navigator.pushNamed(context, '/');
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.person, size: 40, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserInfoScreen(),
+                  ),
+                );
               },
             ),
           ],
