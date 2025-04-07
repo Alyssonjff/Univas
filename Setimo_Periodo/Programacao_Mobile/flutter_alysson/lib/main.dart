@@ -12,42 +12,60 @@ void main() async {
   runApp(MyApp(prefs: prefs));
 }
 
+class AppRoutes {
+  static const home = '/';
+  static const createProject = '/create-project';
+  static const projectsCreated = '/projects-created';
+  static const searchProjects = '/search-projects';
+  static const userInfo = '/user-info';
+}
+
 class MyApp extends StatelessWidget {
   final SharedPreferences prefs;
 
   MyApp({required this.prefs});
 
+  ThemeData _buildTheme() {
+    return ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      appBarTheme: AppBarTheme(backgroundColor: Color(0xFF00CED1)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Gestão de Pesquisa Escolar',
-      theme: ThemeData(
+      theme: _buildTheme(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/',
+      themeMode: ThemeMode.system,
+      initialRoute: AppRoutes.home,
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case '/':
+          case AppRoutes.home:
             return MaterialPageRoute(
               builder: (context) => HomeScreen(prefs: prefs),
             );
-          case '/create-project':
+          case AppRoutes.createProject:
             return MaterialPageRoute(
               builder: (context) => CreateProjectScreen(prefs: prefs),
             );
-          case '/projects-created':
+          case AppRoutes.projectsCreated:
             return MaterialPageRoute(
               builder: (context) => ProjectsCreatedScreen(prefs: prefs),
             );
-          case '/search-projects':
+          case AppRoutes.searchProjects:
             return MaterialPageRoute(
               builder: (context) => SearchProjectsScreen(prefs: prefs),
             );
-          case '/user-info':
-            return MaterialPageRoute(
-              builder: (context) => UserInfoScreen(),
-            );
+          case AppRoutes.userInfo:
+            return MaterialPageRoute(builder: (context) => UserInfoScreen());
           default:
             return MaterialPageRoute(
               builder: (context) => HomeScreen(prefs: prefs),
