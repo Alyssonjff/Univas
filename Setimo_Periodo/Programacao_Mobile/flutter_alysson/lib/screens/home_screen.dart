@@ -39,11 +39,9 @@ class HomeScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  _navigateWithFade(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ProjectsCreatedScreen(prefs: prefs),
-                    ),
+                    ProjectsCreatedScreen(prefs: prefs),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -59,11 +57,9 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  _navigateWithFade(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => SearchProjectsScreen(prefs: prefs),
-                    ),
+                    SearchProjectsScreen(prefs: prefs),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -79,12 +75,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateProjectScreen(prefs: prefs),
-                    ),
-                  );
+                  _navigateWithFade(context, CreateProjectScreen(prefs: prefs));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFD3D3D3),
@@ -120,16 +111,28 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.person, size: 40, color: Colors.white),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserInfoScreen(),
-                  ),
-                );
+                _navigateWithFade(context, UserInfoScreen());
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _navigateWithFade(BuildContext context, Widget destination) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => destination,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+          );
+
+          return FadeTransition(opacity: fadeAnimation, child: child);
+        },
+        transitionDuration: Duration(seconds: 1),
       ),
     );
   }
