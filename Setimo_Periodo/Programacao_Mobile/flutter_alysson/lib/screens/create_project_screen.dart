@@ -12,23 +12,57 @@ class CreateProjectScreen extends StatefulWidget {
 }
 
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
-
-  void _saveProjects(List<Map<String, String>> projects) async {
-    final String encodedData = jsonEncode(projects);
-    await widget.prefs.setString('projects', encodedData);
-  }
+  final TextEditingController _messageController = TextEditingController();
 
   List<Map<String, String>> _loadProjects() {
     final String? projectsData = widget.prefs.getString('projects');
     if (projectsData != null) {
-      List<dynamic> decodedData = jsonDecode(projectsData);
-      return decodedData.map((item) => Map<String, String>.from(item)).toList();
+      try {
+        List<dynamic> decodedData = jsonDecode(projectsData);
+        return decodedData
+            .map((item) => Map<String, String>.from(item))
+            .toList();
+      } catch (e) {
+        print('Erro ao decodificar os dados do projeto: $e');
+      }
     }
     return [];
+  }
+
+  void _saveProject() {
+    final String title = _titleController.text.trim();
+    final String author = _authorController.text.trim();
+    final String message = _messageController.text.trim();
+
+    if (title.isNotEmpty && author.isNotEmpty && message.isNotEmpty) {
+      List<Map<String, String>> existingProjects = _loadProjects();
+      existingProjects.add({
+        'title': title,
+        'author': author,
+        'message': message,
+      });
+
+      List<Map<String, dynamic>> projectsToSave =
+          existingProjects
+              .map(
+                (project) => {
+                  'title': project['title'],
+                  'author': project['author'],
+                  'message': project['message'],
+                },
+              )
+              .toList();
+
+      widget.prefs.setString('projects', jsonEncode(projectsToSave));
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, preencha todos os campos.')),
+      );
+    }
   }
 
   @override
@@ -41,7 +75,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           color: Color(0xFF00CED1),
           child: Center(
             child: Text(
-              'Criar Projetos',
+              'Criar Projeto',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -53,138 +87,52 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                Text(
-                  'Título do Projeto:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Algerian',
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    hintText: 'Digite o título do projeto',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, insira um título';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Descrição do Projeto:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Algerian',
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _descriptionController,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    hintText: 'Digite a descrição do projeto',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, insira uma descrição';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Autor:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Algerian',
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: _authorController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    hintText: 'Digite o nome do autor',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, insira o nome do autor';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 40),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                          List<Map<String, String>> projects = _loadProjects();
-
-                        projects.add({
-                          'title': _titleController.text,
-                          'description': _descriptionController.text,
-                          'author': _authorController.text,
-                        });
-
-                        _saveProjects(projects);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Projeto Criado!')),
-                        );
-
-                        _titleController.clear();
-                        _descriptionController.clear();
-                        _authorController.clear();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFD3D3D3),
-                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Criar Projeto',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Algerian',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                labelText: 'Título do Projeto',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _authorController,
+              decoration: InputDecoration(
+                labelText: 'Autor do Projeto',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _messageController,
+              decoration: InputDecoration(
+                labelText: 'Mensagem',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _saveProject,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFD3D3D3),
+                padding: EdgeInsets.symmetric(vertical: 16),
+                minimumSize: Size(double.infinity, 60),
+              ),
+              child: Text(
+                'Salvar Projeto',
+                style: TextStyle(fontSize: 18, fontFamily: 'Algerian'),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(
@@ -192,6 +140,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            IconButton(
+              icon: Icon(Icons.menu, size: 40, color: Colors.white),
+              onPressed: () {
+                print('Menu pressionado');
+              },
+            ),
             IconButton(
               icon: Icon(Icons.arrow_back, size: 40, color: Colors.white),
               onPressed: () {
