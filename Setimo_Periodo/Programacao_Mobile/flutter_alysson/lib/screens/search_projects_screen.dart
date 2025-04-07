@@ -15,45 +15,61 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
 
-  Map<String, String>? _searchResult;
-  String? _errorMessage;
+  List<Map<String, String>> _filteredProjects = [];
+  List<Map<String, String>> _allProjects = [];
 
-  List<Map<String, String>> _loadProjects() {
+  @override
+  void initState() {
+    super.initState();
+    _loadProjects();
+
+    _titleController.addListener(_filterProjects);
+  }
+
+  @override
+  void dispose() {
+    _titleController.removeListener(_filterProjects);
+    super.dispose();
+  }
+
+  void _loadProjects() {
     final String? projectsData = widget.prefs.getString('projects');
     if (projectsData != null) {
-      List<dynamic> decodedData = jsonDecode(projectsData);
-      return decodedData.map((item) => Map<String, String>.from(item)).toList();
+      try {
+        List<dynamic> decodedData = jsonDecode(projectsData);
+        setState(() {
+          _allProjects =
+              decodedData
+                  .map((item) => Map<String, String>.from(item))
+                  .toList();
+          _filteredProjects = List.from(_allProjects);
+        });
+      } catch (e) {
+        print('Erro ao decodificar os dados do projeto: $e');
+      }
     }
-    return [];
+  }
+
+  void _filterProjects() {
+    String titleQuery = _titleController.text.toLowerCase();
+    String authorQuery = _authorController.text.toLowerCase();
+
+    setState(() {
+      _filteredProjects =
+          _allProjects.where((project) {
+            bool matchesTitle =
+                titleQuery.isEmpty ||
+                project['title']!.toLowerCase().contains(titleQuery);
+            bool matchesAuthor =
+                authorQuery.isEmpty ||
+                project['author']!.toLowerCase().contains(authorQuery);
+            return matchesTitle && matchesAuthor;
+          }).toList();
+    });
   }
 
   void _searchProjects() {
-    final String title = _titleController.text.trim();
-    final String author = _authorController.text.trim();
-
-    setState(() {
-      _searchResult = null;
-      _errorMessage = null;
-
-      if (title.isEmpty && author.isEmpty) {
-        _errorMessage = 'Digite um título ou autor para pesquisar.';
-        return;
-      }
-
-      List<Map<String, String>> projects = _loadProjects();
-
-      for (var project in projects) {
-        if ((title.isNotEmpty && project['title']!.toLowerCase().contains(title.toLowerCase())) ||
-            (author.isNotEmpty && project['author']!.toLowerCase().contains(author.toLowerCase()))) {
-          _searchResult = project;
-          break;
-        }
-      }
-
-      if (_searchResult == null) {
-        _errorMessage = 'Nenhum projeto encontrado.';
-      }
-    });
+    _filterProjects();
   }
 
   @override
@@ -61,8 +77,14 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF40E0D0),
       appBar: AppBar(
-        title: Text('Pesquisar Projetos'),
+        title: Center(
+          child: Text(
+            'Pesquisar Projetos',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
         backgroundColor: Color(0xFF00CED1),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,7 +93,11 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
           children: [
             Text(
               'Pesquisar por Título:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 10),
             TextField(
@@ -87,7 +113,11 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
             SizedBox(height: 20),
             Text(
               'Pesquisar por Autor:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 10),
             TextField(
@@ -99,6 +129,9 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
                 filled: true,
                 contentPadding: EdgeInsets.all(16),
               ),
+              onChanged: (value) {
+                _filterProjects();
+              },
             ),
             SizedBox(height: 40),
             ElevatedButton(
@@ -118,30 +151,33 @@ class _SearchProjectsScreenState extends State<SearchProjectsScreen> {
               ),
             ),
             SizedBox(height: 20),
-            if (_errorMessage != null)
+            if (_filteredProjects.isEmpty)
               Text(
-                _errorMessage!,
+                'Nenhum projeto encontrado.',
                 style: TextStyle(fontSize: 18, color: Colors.red),
               ),
-            if (_searchResult != null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Projeto Encontrado:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Título: ${_searchResult!['title']}',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  Text(
-                    'Autor: ${_searchResult!['author']}',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: _filteredProjects.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Color(0xFF00CED1),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: ListTile(
+                      title: Text(
+                        _filteredProjects[index]['title'] ??
+                            'Título não disponível',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      subtitle: Text(
+                        'Autor: ${_filteredProjects[index]['author'] ?? 'Autor desconhecido'}',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                },
               ),
+            ),
           ],
         ),
       ),
